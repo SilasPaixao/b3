@@ -33,7 +33,7 @@ interface SutTypes {
   emailValidatorStub: EmailValidator
   authenticationStub: Authentication
 }
-
+ 
 const makeSut = (): SutTypes => {
   const emailValidatorStub = makeEmailValidator()
   const authenticationStub = makeAuthentication()
