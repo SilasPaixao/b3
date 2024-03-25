@@ -1,8 +1,8 @@
 import { Express, Router } from 'express'
-import signupRoutes from '../routes/signup-routes'
+import fg from 'fast-glob'
 
 export default (app: Express): void => {
   const router = Router()
   app.use('/api', router)
-  signupRoutes(router)
+  fg.sync('**/src/main/routes/**routes.ts').map(async file => (await import(`../../../${file}`)).default(router))
 }
