@@ -6,10 +6,7 @@ export const MongoHelper = {
 
   async connect (uri: string): Promise<void> {
     this.uri = uri
-    this.client = await MongoClient.connect(uri, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true
-    })
+    this.client = await MongoClient.connect(uri)
   },
 
   async disconnect (): Promise<void> {
@@ -17,11 +14,11 @@ export const MongoHelper = {
     this.client = null
   },
 
-  async getCollection (name: string): Promise<Collection> {
-    if (!this.client?.isConnected()) {
-      await this.connect(this.uri)
+  async getCollection(name: string): Promise<Collection> {
+    if (!this.client) {
+      await this.connect(this.uri);
     }
-    return this.client.db().collection(name)
+    return this.client.db().collection(name);
   },
 
   map: (collection: any): any => {
