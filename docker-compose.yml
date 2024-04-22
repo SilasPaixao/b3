@@ -3,22 +3,27 @@ version: "3"
 services:
   mongo:
     container_name: mongo-container
-    image: mongo:6
+    image: mongo:3
     restart: always
     volumes:
-      - ./data:/data/db:rw
+      - ./data:/data/db
     ports:
       - "27017:27017"
+
   app:
     container_name: app-container
-    image: node:20
+    image: node:latest
     restart: always
     working_dir: /usr/app
-    command: bash -c "npm install --omit=dev && npm run start"
+    command: bash -c "npm install && npm run start"
+    environment:
+      - MONGO_URL=mongodb://mongo:27017/b3
     ports:
       - "5050:5050"
     volumes:
-      - ./dist/:/usr/app/dist/
+      - ./dist:/usr/app/dist
       - ./package.json:/usr/app/package.json
+    depends_on:
+      - mongo
     links:
       - mongo
