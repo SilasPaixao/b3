@@ -8,7 +8,7 @@ let accountCollection: Collection
 
 describe('Login Routes', () => {
   beforeAll(async () => {
-    await MongoHelper.connect(process.env.MONGO_URL as string)
+    await MongoHelper.connect(process.env.MONGO_URL)
   })
 
   afterAll(async () => {
@@ -25,8 +25,8 @@ describe('Login Routes', () => {
       await request(app)
         .post('/api/signup')
         .send({
-          name: 'Silas',
-          email: 'silas.paixao@gmail.com',
+          name: 'Rodrigo',
+          email: 'rodrigo.manguinho@gmail.com',
           password: '123',
           passwordConfirmation: '123'
         })
@@ -38,14 +38,14 @@ describe('Login Routes', () => {
     test('Should return 200 on login', async () => {
       const password = await hash('123', 12)
       await accountCollection.insertOne({
-        name: 'Silas',
-        email: 'silas.paixao@gmail.com',
+        name: 'Rodrigo',
+        email: 'rodrigo.manguinho@gmail.com',
         password
       })
       await request(app)
         .post('/api/login')
         .send({
-          email: 'silas.paixao@gmail.com',
+          email: 'rodrigo.manguinho@gmail.com',
           password: '123'
         })
         .expect(200)
@@ -55,7 +55,7 @@ describe('Login Routes', () => {
       await request(app)
         .post('/api/login')
         .send({
-          email: 'silas.paixao@gmail.com',
+          email: 'rodrigo.manguinho@gmail.com',
           password: '123'
         })
         .expect(401)
