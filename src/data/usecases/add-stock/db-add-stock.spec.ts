@@ -39,4 +39,10 @@ describe('DbAddStock Usecase', () => {
     await sut.add(stockData)
     expect(addSpy).toHaveBeenCalledWith(stockData)
   })
+  test('Should throw if AddStockRepository throws', async () => {
+    const { sut, addStockRepositoryStub } = makeSut()
+    jest.spyOn(addStockRepositoryStub, 'add').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
+    const promise = sut.add(makeFakeStockData())
+    await expect(promise).rejects.toThrow()
+  })
 })
