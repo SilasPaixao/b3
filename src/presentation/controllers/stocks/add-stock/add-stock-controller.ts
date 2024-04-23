@@ -1,5 +1,5 @@
 import { Controller, HttpRequest, HttpResponse, Validation, AddStock } from './add-stock-controller-protocols'
-import { badRequest, serverError } from '../../../helpers/http/http-helper'
+import { badRequest, serverError, noContent } from '../../../helpers/http/http-helper'
 
 export class AddStockController implements Controller {
   constructor(
@@ -20,10 +20,11 @@ export class AddStockController implements Controller {
         acronym,
         lucro
       })
+
+      return noContent()
+
     } catch (error) {
       return serverError(error)
     }
-
-    return null
   }
 }
