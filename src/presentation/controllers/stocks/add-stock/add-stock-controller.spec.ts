@@ -1,7 +1,7 @@
-import { HttpRequest } from './add-stock-controller-protocols'
+import { HttpRequest, Validation, AddStock, AddStockModel } from './add-stock-controller-protocols'
 import { AddStockController } from './add-stock-controller'
-import { Validation } from '../../../protocols'
 import { badRequest } from '../../../helpers/http/http-helper'
+
 
 const makeFakeRequest = (): HttpRequest => ({
   body: {
@@ -21,21 +21,33 @@ const makeValidation = (): Validation => {
   return new ValidationStub()
 }
 
+const makeAddStock = (): AddStock => {
+  class AddStockStub implements AddStock {
+    async add (data: AddStockModel): Promise<void> {
+      return new Promise(resolve => resolve())
+    }
+  }
+  return new AddStockStub()
+}
+
 interface SutTypes {
   sut: AddStockController
   validationStub: Validation
+  addStockStub: AddStock
 }
 
 const makeSut = (): SutTypes => {
   const validationStub = makeValidation()
-  const sut = new AddStockController(validationStub)
+  const addStockStub = makeAddStock()
+  const sut = new AddStockController(validationStub, addStockStub)
   return {
     sut,
-    validationStub
+    validationStub,
+    addStockStub
   }
 }
 
-describe('AddSurvey Controller', () => {
+describe('AddStock Controller', () => {
   test('Should call Validation with correct values', async () => {
     const { sut, validationStub } = makeSut()
     const validateSpy = jest.spyOn(validationStub, 'validate')
@@ -49,5 +61,13 @@ describe('AddSurvey Controller', () => {
     jest.spyOn(validationStub, 'validate').mockReturnValueOnce(new Error())
     const httpResponse = await sut.handle(makeFakeRequest())
     expect(httpResponse).toEqual(badRequest(new Error()))
+  })
+
+  test('Should call AddStock with correct values', async () => {
+    const { sut, addStockStub } = makeSut()
+    const addSpy = jest.spyOn(addStockStub, 'add')
+    const httpRequest = makeFakeRequest()
+    await sut.handle(httpRequest)
+    expect(addSpy).toHaveBeenCalledWith(httpRequest.body)
   })
 })
