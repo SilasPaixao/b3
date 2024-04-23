@@ -2,7 +2,7 @@ export interface AddStockModel {
   year: string,
   stock: string,
   acronym: string,
-  lucro: string
+  profit: string
 }
 
 export interface AddStock {

@@ -5,7 +5,7 @@ const makeFakeStockData = (): AddStockModel => ({
   year: '2000',
   stock: 'petrobras',
   acronym: 'petr4',
-  lucro: '10%'
+  profit: '10%'
 })
 
 describe('DbAddStock Usecase', () => {

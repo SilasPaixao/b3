@@ -13,12 +13,12 @@ export class AddStockController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      const { year, stock, acronym, lucro } = httpRequest.body
+      const { year, stock, acronym, profit } = httpRequest.body
       await this.addStock.add({
         year,
         stock,
         acronym,
-        lucro
+        profit
       })
 
       return noContent()
