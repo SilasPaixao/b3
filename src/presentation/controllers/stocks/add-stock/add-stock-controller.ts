@@ -1,9 +1,10 @@
-import { Controller, HttpRequest, HttpResponse, Validation } from './add-stock-controller-protocols'
+import { Controller, HttpRequest, HttpResponse, Validation, AddStock } from './add-stock-controller-protocols'
 import { badRequest } from '../../../helpers/http/http-helper'
 
 export class AddStockController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly addStock: AddStock
   ) {}
 
   async handle (httpRequest: HttpRequest): Promise<HttpResponse> {
@@ -11,6 +12,14 @@ export class AddStockController implements Controller {
     if (error) {
       return badRequest(error)
     }
-    return new Promise(resolve => resolve(null))
+    const {year, stock, acronym, lucro} = httpRequest.body
+    await this.addStock.add({
+      year,
+      stock,
+      acronym,
+      lucro
+    })
+
+    return null
   }
 }
