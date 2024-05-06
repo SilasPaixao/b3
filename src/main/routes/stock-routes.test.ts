@@ -20,7 +20,7 @@ describe('Stock Routes', () => {
   })
 
   describe('POST /stocks', () => {
-    test('Should return 204 on add stock success', async () => {
+    test('Should return 403 on add stock without accessToken', async () => {
       await request(app)
         .post('/api/stocks')
         .send({
@@ -29,7 +29,7 @@ describe('Stock Routes', () => {
           acronym: 'petr4',
           profit: '10%'
         })
-        .expect(204)
+        .expect(403)
     })
   })
 })
