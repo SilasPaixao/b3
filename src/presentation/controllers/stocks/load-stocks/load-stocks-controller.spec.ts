@@ -1,5 +1,6 @@
 import { LoadStocksController } from './load-stocks-controller'
 import { StockModel, LoadStocks } from './load-stocks-controller-protocols'
+import { ok } from '../../../helpers/http/http-helper'
 
 const makeFakeStocks = (): StockModel[] => {
   return [{
@@ -49,5 +50,10 @@ describe('LoadStocks Controller', () => {
     const loadSpy = jest.spyOn(loadStocksStub, 'load')
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
+  })
+  test('Should return 200 on success', async () => {
+    const { sut } = makeSut()
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(ok(makeFakeStocks()))
   })
 })
