@@ -1,6 +1,6 @@
 import { LoadStocksController } from './load-stocks-controller'
 import { StockModel, LoadStocks } from './load-stocks-controller-protocols'
-import { ok, serverError } from '../../../helpers/http/http-helper'
+import { ok, serverError, noContent } from '../../../helpers/http/http-helper'
 
 const makeFakeStocks = (): StockModel[] => {
   return [{
@@ -56,7 +56,12 @@ describe('LoadStocks Controller', () => {
     const httpResponse = await sut.handle({})
     expect(httpResponse).toEqual(ok(makeFakeStocks()))
   })
-
+  test('Should return 204 if LoadStocks returns empty', async () => {
+    const { sut, loadStocksStub } = makeSut()
+    jest.spyOn(loadStocksStub, 'load').mockReturnValueOnce(new Promise(resolve => resolve([])))
+    const httpResponse = await sut.handle({})
+    expect(httpResponse).toEqual(noContent())
+  })
   test('Should return 500 if LoadStocks throws', async () => {
     const { sut, loadStocksStub } = makeSut()
     jest.spyOn(loadStocksStub, 'load').mockReturnValueOnce(new Promise((resolve, reject) => reject(new Error())))
