@@ -49,4 +49,9 @@ describe('DbLoadStocks', () => {
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
   })
+  test('Should return a list of Stocks on success', async () => {
+    const { sut } = makeSut()
+    const stocks = await sut.load()
+    expect(stocks).toEqual(makeFakeStocks())
+  })
 })
