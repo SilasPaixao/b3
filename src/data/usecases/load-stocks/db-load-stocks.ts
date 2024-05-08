@@ -6,7 +6,7 @@ export class DbLoadStocks implements LoadStocks {
   constructor (private readonly loadStocksRepository: LoadStocksRepository) {}
 
   async load (): Promise<StockModel[]> {
-    await this.loadStocksRepository.loadAll()
-    return []
+    const stocks = await this.loadStocksRepository.loadAll()
+    return stocks
   }
 }
