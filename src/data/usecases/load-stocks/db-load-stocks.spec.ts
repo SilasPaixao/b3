@@ -19,16 +19,33 @@ const makeFakeStocks = (): StockModel[] => {
   }]
 }
 
+interface SutTypes {
+  sut: DbLoadStocks
+  loadStocksRepositoryStub: LoadStocksRepository
+}
+
+const makeLoadStocksRepository = (): LoadStocksRepository => {
+  class LoadStocksRepositoryStub implements LoadStocksRepository {
+    async loadAll (): Promise<StockModel[]> {
+      return new Promise(resolve => resolve(makeFakeStocks()))
+    }
+  }
+  return new LoadStocksRepositoryStub()
+}
+
+const makeSut = (): SutTypes => {
+  const loadStocksRepositoryStub = makeLoadStocksRepository()
+  const sut = new DbLoadStocks(loadStocksRepositoryStub)
+  return {
+    sut,
+    loadStocksRepositoryStub
+  }
+}
+
 describe('DbLoadStocks', () => {
   test('Should call LoadStocksRepository', async () => {
-    class LoadStocksRepositoryStub implements LoadStocksRepository {
-      async loadAll (): Promise<StockModel[]> {
-        return new Promise(resolve => resolve(makeFakeStocks()))
-      }
-    }
-    const loadStocksRepositoryStub = new LoadStocksRepositoryStub()
+    const { sut, loadStocksRepositoryStub } = makeSut()
     const loadAllSpy = jest.spyOn(loadStocksRepositoryStub, 'loadAll')
-    const sut = new DbLoadStocks(loadStocksRepositoryStub)
     await sut.load()
     expect(loadAllSpy).toHaveBeenCalled()
   })
