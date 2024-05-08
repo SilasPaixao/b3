@@ -4,6 +4,10 @@ import { Collection } from 'mongodb'
 
 let stockCollection: Collection
 
+const makeSut = (): StockMongoRepository => {
+  return new StockMongoRepository()
+}
+
 describe('Stock Mongo Repository', () => {
   beforeAll(async () => {
     await MongoHelper.connect(process.env.MONGO_URL as string)
@@ -18,20 +22,18 @@ describe('Stock Mongo Repository', () => {
     await stockCollection.deleteMany({})
   })
 
-  const makeSut = (): StockMongoRepository => {
-    return new StockMongoRepository()
-  }
+  describe('add()', () => {
+    test('Should add a stock on success', async () => {
+      const sut = makeSut()
+      await sut.add({
+        year: '2000',
+        stock: 'petrobras',
+        acronym: 'petr4',
+        profit: '10%'
+      })
 
-  test('Should add a stock on success', async () => {
-    const sut = makeSut()
-    await sut.add({
-      year: '2000',
-      stock: 'petrobras',
-      acronym: 'petr4',
-      profit: '10%'
+      const stock = await stockCollection.findOne({ year: '2000' })
+      expect(stock).toBeTruthy()
     })
-
-    const stock = await stockCollection.findOne({ year: '2000' })
-    expect(stock).toBeTruthy()
   })
 })
