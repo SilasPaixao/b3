@@ -18,17 +18,35 @@ const makeFakeStocks = (): StockModel[] => {
   }]
 }
 
+interface SutTypes {
+  sut: LoadStocksController
+  loadStocksStub: LoadStocks
+}
+
+const makeLoadStocks = (): LoadStocks => {
+  class LoadStocksStub implements LoadStocks {
+    async load(): Promise<StockModel[]> {
+      return new Promise(resolve => resolve(makeFakeStocks()))
+    }
+  }
+  return new LoadStocksStub()
+}
+
+const makeSut = (): SutTypes => {
+  const loadStocksStub = makeLoadStocks()
+  const sut = new LoadStocksController(loadStocksStub)
+  return {
+    sut,
+    loadStocksStub
+  }
+}
+
 describe('LoadStocks Controller', () => {
 
   test('Should call LoadStocks', async () => {
-    class LoadStocksStub implements LoadStocks {
-      async load(): Promise<StockModel[]> {
-        return new Promise(resolve => resolve(makeFakeStocks()))
-      }
-    }
-    const loadStocksStub = new LoadStocksStub()
+
+    const { sut, loadStocksStub } = makeSut()
     const loadSpy = jest.spyOn(loadStocksStub, 'load')
-    const sut = new LoadStocksController(loadStocksStub)
     await sut.handle({})
     expect(loadSpy).toHaveBeenCalled()
   })
