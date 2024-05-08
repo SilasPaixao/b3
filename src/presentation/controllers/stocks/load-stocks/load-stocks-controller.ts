@@ -1,4 +1,4 @@
-import { ok, serverError } from '../../../helpers/http/http-helper'
+import { ok, serverError, noContent } from '../../../helpers/http/http-helper'
 import { Controller, HttpRequest, HttpResponse, LoadStocks } from './load-stocks-controller-protocols'
 
 export class LoadStocksController implements Controller {
@@ -7,7 +7,7 @@ export class LoadStocksController implements Controller {
   async handle(httpRequest: HttpRequest): Promise<HttpResponse> {
     try {
       const stocks = await this.loadStocks.load()
-      return ok(stocks)
+      return stocks.length ? ok(stocks) : noContent()
     } catch (error) {
       return serverError(error)
     }
