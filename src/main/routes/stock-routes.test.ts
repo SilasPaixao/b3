@@ -65,4 +65,11 @@ describe('Stock Routes', () => {
         .expect(204)
     })
   })
+  describe('GET /stocks', () => {
+    test('Should return 403 on load stocks without accessToken', async () => {
+      await request(app)
+        .get('/api/stocks')
+        .expect(403)
+    })
+  })
 })
