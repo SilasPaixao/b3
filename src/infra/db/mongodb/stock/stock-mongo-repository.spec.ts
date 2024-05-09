@@ -55,5 +55,11 @@ describe('Stock Mongo Repository', () => {
       expect(stocks[0].year).toBe('2000')
       expect(stocks[1].year).toBe('2001')
     })
+
+    test('Should load empty list', async () => {
+      const sut = makeSut()
+      const stocks = await sut.loadAll()
+      expect(stocks.length).toBe(0)
+    })
   })
 })
