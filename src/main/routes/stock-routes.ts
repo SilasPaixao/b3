@@ -6,8 +6,6 @@ import { adminAuth } from '../middlewares/admin-auth'
 import { auth } from '../middlewares/auth'
 
 export default (router: Router): void => {
-
   router.post('/stocks', adminAuth, adaptRoute(makeAddStockController()))
   router.get('/stocks', auth, adaptRoute(makeLoadStocksController()))
-
 }
