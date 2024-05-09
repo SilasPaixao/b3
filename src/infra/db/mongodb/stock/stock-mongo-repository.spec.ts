@@ -36,4 +36,24 @@ describe('Stock Mongo Repository', () => {
       expect(stock).toBeTruthy()
     })
   })
+  describe('loadAll()', () => {
+    test('Should load all stocks on success', async () => {
+      await stockCollection.insertMany([{
+        year: '2000',
+        stock: 'petrobras',
+        acronym: 'petr4',
+        profit: '10%'
+      }, {
+        year: '2001',
+        stock: 'Ambev',
+        acronym: 'ABEV3',
+        profit: '10%'
+      }])
+      const sut = makeSut()
+      const stocks = await sut.loadAll()
+      expect(stocks.length).toBe(2)
+      expect(stocks[0].year).toBe('2000')
+      expect(stocks[1].year).toBe('2001')
+    })
+  })
 })
