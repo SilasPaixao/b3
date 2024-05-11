@@ -14,29 +14,33 @@ export class AccountMongoRepository implements AddAccountRepository, LoadAccount
     return MongoHelper.map(insertedDocument)
   }
 
-  async loadByEmail (email: string): Promise<AccountModel> {
+  async loadByEmail(email: string): Promise<AccountModel> {
     const accountCollection = await MongoHelper.getCollection('accounts')
     const account = await accountCollection.findOne({ email })
     return account && MongoHelper.map(account)
   }
 
-  
 
-async updateAccessToken(id: string, token: string): Promise<void> {
-  const accountCollection = await MongoHelper.getCollection('accounts')
-  const objectId = new ObjectId(id)
-  await accountCollection.updateOne(
-    { _id: objectId },
-    { $set: { accessToken: token } }
-  );
-}
 
-async loadByToken (token: string, role?: string): Promise<AccountModel> {
-  const accountCollection = await MongoHelper.getCollection('accounts')
-  const account = await accountCollection.findOne({
-    accessToken: token,
-    role
-  })
-  return account && MongoHelper.map(account)
-}
+  async updateAccessToken(id: string, token: string): Promise<void> {
+    const accountCollection = await MongoHelper.getCollection('accounts')
+    const objectId = new ObjectId(id)
+    await accountCollection.updateOne(
+      { _id: objectId },
+      { $set: { accessToken: token } }
+    );
+  }
+
+  async loadByToken(token: string, role?: string): Promise<AccountModel> {
+    const accountCollection = await MongoHelper.getCollection('accounts')
+    const account = await accountCollection.findOne({
+      accessToken: token,
+      $or: [{
+        role
+      }, {
+        role: 'admin'
+      }]
+    })
+    return account && MongoHelper.map(account)
+  }
 }
