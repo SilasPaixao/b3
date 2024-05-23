@@ -4,7 +4,7 @@
 
 A API foi desenvolvida com o propósito de apresentar as ações com os maiores retornos positivos em cada ano desde 2000, ao longo do período de 1º de janeiro a 30 de dezembro de cada ano. A API objetiva proporcionar os dados crús possibilitando a identificação de padrões potenciais na volatilidade do mercado de ações.
 
-> ## APIs previstas para esse treinamento:
+> ## APIs imprementadas neste projeto:
 
 1. [Cadastro](./requirements/signup.md)
 1. [Login](./requirements/login.md)
