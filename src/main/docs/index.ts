@@ -1,8 +1,7 @@
-import { notFound, serverError, unauthorized, badRequest} from './components'
+import { notFound, serverError, unauthorized, badRequest, forbidden } from './components'
 import { loginPath } from './paths/login-path'
-import { accountSchema } from './schemas/account-schema'
-import { errorSchema } from './schemas/error-schema'
-import { loginParamsSchema } from './schemas/login-params-schema'
+import { signUpPath } from './paths/signup-path'
+import { accountSchema, errorSchema, loginParamsSchema, signUpParamsSchema } from './schemas'
 
 export default {
   openapi: '3.0.0',
@@ -14,32 +13,35 @@ export default {
       name: 'Silas Paixão',
       email: 'silas.paixao873@gmail.com',
       url: 'https://portfolio-silas.vercel.app/'
-    },
-    license: {
-      name: 'GPL-3.0-or-later',
-      url: 'https://spdx.org/licenses/GPL-3.0-or-later.html'
-    },
-    servers: [{
-      url: '/api',
-      description: 'Servidor Principal'
-    }],
-    tags: [{
-      name: 'Login',
-      description: 'APIs relacionadas a Login'
-    }],
-    paths: {
-      '/login': loginPath
-    },
-    schemas: {
-      account: accountSchema,
-      loginParams: loginParamsSchema,
-      error: errorSchema
-    },
-    components: {
-      badRequest: badRequest,
-      serverError: serverError,
-      unauthorized: unauthorized,
-      notFound: notFound
     }
+  },
+  license: {
+    name: 'GPL-3.0-or-later',
+    url: 'https://spdx.org/licenses/GPL-3.0-or-later.html'
+  },
+  servers: [{
+    url: '/api',
+    description: 'Servidor Principal'
+  }],
+  tags: [{
+    name: 'Login',
+    description: 'APIs relacionadas a Login'
+  }],
+  paths: {
+    '/login': loginPath,
+    '/signup': signUpPath
+  },
+  schemas: {
+    account: accountSchema,
+    loginParams: loginParamsSchema,
+    signUpParams: signUpParamsSchema,
+    error: errorSchema
+  },
+  components: {
+    badRequest: badRequest,
+    serverError: serverError,
+    unauthorized: unauthorized,
+    notFound: notFound,
+    forbidden: forbidden
   }
 }
