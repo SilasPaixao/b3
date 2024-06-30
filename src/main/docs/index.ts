@@ -1,7 +1,8 @@
 import { notFound, serverError, unauthorized, badRequest, forbidden } from './components'
 import { loginPath } from './paths/login-path'
 import { signUpPath } from './paths/signup-path'
-import { accountSchema, errorSchema, loginParamsSchema, signUpParamsSchema } from './schemas'
+import { stockPath } from './paths/stock-path'
+import { accountSchema, errorSchema, loginParamsSchema, signUpParamsSchema, apiKeyAuthSchema, addStockParamsSchema, stocksSchema } from './schemas'
 
 export default {
   openapi: '3.0.0',
@@ -26,18 +27,28 @@ export default {
   tags: [{
     name: 'Login',
     description: 'APIs relacionadas a Login'
+  },
+{
+    name: 'Ações',
+    description: 'APIs relacionadas às Ações'
   }],
   paths: {
     '/login': loginPath,
-    '/signup': signUpPath
+    '/signup': signUpPath,
+    '/stocks': stockPath
   },
   schemas: {
     account: accountSchema,
     loginParams: loginParamsSchema,
     signUpParams: signUpParamsSchema,
+    addStockParams: addStockParamsSchema,
+    stocks: stocksSchema,
     error: errorSchema
   },
   components: {
+    securitySchemes: {
+      apiKeyAuth: apiKeyAuthSchema
+     },
     badRequest: badRequest,
     serverError: serverError,
     unauthorized: unauthorized,
