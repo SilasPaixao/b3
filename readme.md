@@ -11,7 +11,7 @@ A API foi desenvolvida com o propósito de apresentar as ações com os maiores 
 1. [Criar ação](./requirements/add-stocks.md)
 1. [Listar ações](./requirements/load-stocks.md)
 
-> ## Princípios aplicados:
+> ## Princípios aplicados no projeto:
 * Single Responsibility Principle (SRP)
 * Open Closed Principle (OCP)
 * Liskov Substitution Principle (LSP)
